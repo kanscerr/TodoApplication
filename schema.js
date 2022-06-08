@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const formSchema = new mongoose.Schema({
     task : Number,
-    todo : String
+    todo : String,
+    isDeleted : Number
 })
 
 const schema = new mongoose.Schema({
@@ -11,6 +12,6 @@ const schema = new mongoose.Schema({
     username : String
 })
 
-const model = mongoose.model('info', schema)
+const model = mongoose.model('todos', schema)
 
 module.exports = model;
