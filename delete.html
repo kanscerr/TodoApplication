@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Delete Todo</title>
+    <style>
+        .header{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0169B2;
+            color: white;
+            text-align: center;
+            font-weight: bolder;
+            text-align: center;
+            margin-top: 3%;
+        }
+        .card{
+            margin: 10%;
+            width: 100%;
+        }
+        button{
+            position: absolute;
+            top: 200%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20%;
+            height: 60%;
+            margin-top: 10px;
+            border: none;
+        }
+        label{
+            margin-bottom: 15px;
+        }
+        input{
+            min-height: 40px;
+            margin-top: 12px;
+            margin-left: 2px
+        }
+    </style>
+</head>
+<body style="background:#0169B2;">
+    <div class="container">
+        <div class="row">
+            <div class="header"><h4>TODO APPLICATION</h4></div>
+            <div class="card" id="card" style="margin-top: 15%">
+                <div class="card-body">
+                    <input type="text" name="task" id="task" placeholder="Insert task here" style="width: 50vw;" required>
+                    <button onclick="info()" type="submit">DELETE TODO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function info(){
+            const task = document.getElementById('task').value;
+            const formData = new Object;
+            formData.task = task;
+            deleteTodo(JSON.stringify(formData));
+        }
+
+        function deleteTodo(formData){
+            const http = new XMLHttpRequest;
+            http.open('POST', 'http://localhost:3000/delete/2/100', true, {
+                task : formData.task,
+            });
+
+            http.onload = () => {
+                const res = http.response;
+                const data = JSON.parse(res)
+                console.log(data)
+            }
+
+            http.send(formData)
+        }
+    </script>
+</body>
+</html>

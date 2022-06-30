@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        input{
+            width: 90%;
+            margin-left: 5%;
+            margin-top: 25px;
+            height: 40px;
+            align-items: center;
+        }
+        .head{
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translate(-50%, -50%);
+        }
+        .flex{
+            text-align: center;
+            background: white;
+            width: 50%;
+            aspect-ratio: 2/1;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid black;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        label{
+            font-size: large;
+            font-weight: lighter;
+        }
+        button{
+            margin-top: 20px; 
+            width: 100px; 
+            height: 45px; 
+        }
+    </style>
+</head>
+<body style="background: #0169B2;">
+    <div class="head">
+        <h2>REGISTRATION FORM</h2>
+    </div>
+    <div class="flex">
+        <label><i> Sign up-</i></label>
+        <input type="text" placeholder="Enter your username" id="username" required="true"/> <br>
+        <input type="email" placeholder="Enter your email" id="email" required/><br>
+        <input type="password" placeholder="Enter your password" id="password" autocomplete="" required><br>
+        <a href="addTodo.html"><button onclick="submit()" type="submit">Submit</button> </a>
+    </div>
+    
+    <script>
+        
+        function submit(){
+            const username = document.getElementById('username').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            const res = new Object;
+            res.username = username;
+            res.email = email;
+            res.password = password;
+            sendJson(JSON.stringify(res));
+        }
+
+        function sendJson(info){
+            
+            const http = new XMLHttpRequest;
+            http.open('POST', 'http://localhost:3000/register', true, {
+                username : info.username,
+                email : info.email,
+                password : info.password
+            });
+        
+            if(info){
+                http.setRequestHeader('Content-type', 'application/json')
+            }
+
+            http.onload = () => {
+                const res = http.responseText;
+                const data = JSON.parse(res)
+                console.log(data)
+            }
+            
+            http.send(info)
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Add Todo</title>
+    <style>
+        .header{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0169B2;
+            color: white;
+            text-align: center;
+            font-weight: bolder;
+            text-align: center;
+            margin-top: 3%;
+        }
+        .card{
+            margin: 10%;
+            width: 100%;
+        }
+        button{
+            width: 50px;
+            aspect-ratio: 1/1;
+            background: #015998;
+            color: white;
+            font-weight: bolder;
+            font-size: larger;
+            border: none;
+        }
+        input{
+            min-height: 50px;
+        }
+        .flex{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        @media all and (max-width: 1000px){
+            button{
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body style="background:#0169B2;">
+    <div class="container">
+        <div class="row">
+            <div class="header"><h4>TODO APPLICATION</h4></div>
+            <div class="card" id="card" style="margin-top: 15%;">
+                <div class="card-body">
+                    <label>Enter Todo-</label><br>
+                    <label for="todo"></label>
+                    <input type="text" name="task" id="task" placeholder="Task" style="width: 20%;" required>
+                    <input type="text" name="todo" id="todo" placeholder="Insert Todo here" style="width : 70%;" required>
+                    <button class="addTodo" onclick="addTodo()" type="submit">+</button>
+
+                    <!-- <div class="flex" style="background-color: red;">
+                        <button onclick="getAllTodo()" type="submit" style="left : 0%;">GET TODO</button>
+                        <a href="getOne.html"><button onclick="getOneTodo()" type="submit" style="left : 25%;">GET ONE</button></a>
+                        <a href="delete.html"><button onclick="deleteTodo()" type="submit" style="left : 75%;">DELETE TODO</button></a>
+                        <a href="update.html"><button onclick="updateTodo()" type="submit" style="left : 100%;">EDIT TODO</button></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function getAllTodo(){
+            const http = new XMLHttpRequest;
+            http.open('POST', 'http://localhost:3000/getTodo/100', true);
+            http.onload = () => {
+                const res = http.response;
+                const data = JSON.parse(res);
+                console.log(data)
+            }
+            http.send();
+        }
+
+        function addTodo(){
+            const task = document.getElementById('task').value;
+            const todo = document.getElementById('todo').value;
+            const formData = new Object;
+            formData.task = task;
+            formData.todo = todo;
+            sendJson(JSON.stringify(formData));
+        }
+        
+        function sendJson(formData){
+            const http = new XMLHttpRequest;
+            http.open('POST', 'http://localhost:3000/102', true, {
+                task : formData.task,
+                todo : formData.todo
+            })
+            if(formData){
+                http.setRequestHeader('Content-type', 'application/json')
+            }
+
+            http.onload = () => {
+                const res = http.responseText;
+                const data = JSON.parse(res);
+                console.log(data);
+            }
+
+            http.send(formData);
+        }
+    </script>
+</body>
+</html>

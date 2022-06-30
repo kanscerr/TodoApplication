@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Update Todo</title>
+    <style>
+        .header{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0169B2;
+            color: white;
+            text-align: center;
+            font-weight: bolder;
+            text-align: center;
+            margin-top: 3%;
+        }
+        .card{
+            margin: 10%;
+            width: 100%;
+        }
+        button{
+            position: absolute;
+            top: 200%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20%;
+            height: 60%;
+            margin-top: 10px;
+            border: none;
+        }
+        input{
+            min-height: 50px;
+        }
+        .flex{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body style="background:#0169B2;">
+    <div class="container">
+        <div class="row">
+            <div class="header"><h4>TODO APPLICATION</h4></div>
+            <div class="card" id="card" style="margin-top: 15%;">
+                <div class="card-body">
+                    <label>Enter Todo-</label><br>
+                    <label for="todo"></label>
+                    <input type="text" name="task" id="task" placeholder="Task" style="width: 10vw;" required>
+                    <input type="text" name="todo" id="todo" placeholder="Insert Todo here" style="width: 50vw;" required>
+                    <button onclick="info()" type="submit">UPDATE TODO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function info(){
+            const task = document.getElementById('task').value;
+            const todo = document.getElementById('todo').value;
+            const formData = new Object;
+            formData.task = task;
+            formData.todo = todo;
+            updateTodo(JSON.stringify(formData));
+        }
+
+        function updateTodo(formData){
+
+            const http = new XMLHttpRequest;
+            http.open('POST', 'http://localhost:3000/update/1/100', true, {
+                task : formData.task,
+                todo : formData.todo
+            })
+
+            if(formData){
+                http.setRequestHeader('Content-type', 'application/json')
+            }
+
+            http.onload = () => {
+                console.log(http.responseText)
+            }
+            http.send(formData)
+        }
+    </script>
+
+
+
+</body>
+</html>
