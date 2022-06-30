@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
+const { stringify } = require('querystring');
 
 const formSchema = new mongoose.Schema({
-    task : Number,
+    taskNumber : Number,
     todo : String,
-    isDeleted : Number
+    isDeleted : Boolean
 })
 
 const schema = new mongoose.Schema({
+    userInfo : {username : String, email : String, password : String},
+    actionInfo : {action_id : String},
     formData : [formSchema],
-    userId : Number,
-    username : String
+    sessionData : {userid : Number},
+    userId : Number
 })
 
 const model = mongoose.model('todos', schema)
