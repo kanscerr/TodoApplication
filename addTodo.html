@@ -23,7 +23,7 @@
             margin: 10%;
             width: 100%;
         }
-        button{
+        .addTodo{
             width: 50px;
             aspect-ratio: 1/1;
             background: #015998;
@@ -38,11 +38,28 @@
         .flex{
             width: 100%;
             display: flex;
-            flex-direction: row;
+            justify-content: space-between;
         }
-        @media all and (max-width: 1000px){
-            button{
+        button{
+            width: 120px;
+            aspect-ratio: 2/1;
+            border: none;
+        }
+        @media all and (max-width: 993px){
+            .addTodo{
+                position: relative;
+                left: 40%;
                 margin-top: 20px;
+            }
+            button{
+                max-width: 90px;
+                aspect-ratio: 2/1;
+                border: none;
+            }
+            .flex{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
             }
         }
     </style>
@@ -55,60 +72,66 @@
                 <div class="card-body">
                     <label>Enter Todo-</label><br>
                     <label for="todo"></label>
-                    <input type="text" name="task" id="task" placeholder="Task" style="width: 20%;" required>
+                    <input type="text" name="task" id="taskNumber" placeholder="Task" style="width: 20%;" required>
                     <input type="text" name="todo" id="todo" placeholder="Insert Todo here" style="width : 70%;" required>
-                    <button class="addTodo" onclick="addTodo()" type="submit">+</button>
-
-                    <!-- <div class="flex" style="background-color: red;">
-                        <button onclick="getAllTodo()" type="submit" style="left : 0%;">GET TODO</button>
-                        <a href="getOne.html"><button onclick="getOneTodo()" type="submit" style="left : 25%;">GET ONE</button></a>
-                        <a href="delete.html"><button onclick="deleteTodo()" type="submit" style="left : 75%;">DELETE TODO</button></a>
-                        <a href="update.html"><button onclick="updateTodo()" type="submit" style="left : 100%;">EDIT TODO</button></a>
-                    </div> -->
+                    <input type="button" class="addTodo" onclick="sendJson()" type="submit" value="+"></button>
                 </div>
+            </div>
+            <div class="flex">  
+                <button onclick="getAllTodo()" type="submit">Get All Todo</button>
+                <button onclick="getOneTodo()" type="submit">Get One Todo</button>
+                <button onclick="deleteTodo()" type="submit">Delete Todo</button>
+                <button onclick="updateTodo()" type="submit">Update Todo</button>
             </div>
         </div>
     </div>
 
     <script>
-
-        function getAllTodo(){
-            const http = new XMLHttpRequest;
-            http.open('POST', 'http://localhost:3000/getTodo/100', true);
-            http.onload = () => {
-                const res = http.response;
-                const data = JSON.parse(res);
-                console.log(data)
-            }
-            http.send();
-        }
-
-        function addTodo(){
-            const task = document.getElementById('task').value;
+        let userSession = window.localStorage.getItem('userId');
+        sendJson = () => {
+            const taskNumber = document.getElementById('taskNumber').value;
             const todo = document.getElementById('todo').value;
-            const formData = new Object;
-            formData.task = task;
-            formData.todo = todo;
-            sendJson(JSON.stringify(formData));
+            const res = new Object;
+            res.taskNumber = taskNumber;
+            res.todo = todo;
+            addTodo(res);
+            alert("New task added!")
+            document.getElementById('taskNumber').value = "";
+            document.getElementById('todo').value = "";
         }
         
-        function sendJson(formData){
-            const http = new XMLHttpRequest;
-            http.open('POST', 'http://localhost:3000/102', true, {
-                task : formData.task,
-                todo : formData.todo
-            })
-            if(formData){
-                http.setRequestHeader('Content-type', 'application/json')
-            }
+        addTodo = (info) => {
+            fetch('http://localhost:3000/addTodo', {method : 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+                actionInfo : {action_id : 'my_operation'},
+                sessionData : {userId : userSession},
+                formData : {taskNumber : info.taskNumber, todo : info.todo}
+            })})
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(error => console.log('error'));
+        }
 
-            http.onload = () => {
-                const res = http.responseText;
-                const data = JSON.parse(res);
-                console.log(data);
-            }
-
-            http.send(formData);
+        getAllTodo = () => {
+            fetch('http://localhost:3000/getAllTodo', {method : 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+                actionInfo : {action_id : 'my_operation'},
+                sessionData : {userId : userSession}
+            })})
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(error => console.log('Oops! Something went wrong'))
+        }
+        getOneTodo = () => {
+            window.open('getOne.html');
+        }
+        deleteTodo = () => {
+            window.open('delete.html');
+        }
+        updateTodo = () => {
+            window.open('update.html');
         }
     </script>
 </body>

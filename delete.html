@@ -28,8 +28,8 @@
             top: 200%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20%;
-            height: 60%;
+            width: 120px;
+            aspect-ratio: 2/1;
             margin-top: 10px;
             border: none;
         }
@@ -41,6 +41,23 @@
             margin-top: 12px;
             margin-left: 2px
         }
+        @media all and (max-width: 993px){
+            .addTodo{
+                position: relative;
+                left: 40%;
+                margin-top: 20px;
+            }
+            button{
+                max-width: 90px;
+                aspect-ratio: 2/1;
+                border: none;
+            }
+            .flex{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
     </style>
 </head>
 <body style="background:#0169B2;">
@@ -49,33 +66,35 @@
             <div class="header"><h4>TODO APPLICATION</h4></div>
             <div class="card" id="card" style="margin-top: 15%">
                 <div class="card-body">
-                    <input type="text" name="task" id="task" placeholder="Insert task here" style="width: 50vw;" required>
-                    <button onclick="info()" type="submit">DELETE TODO</button>
+                    <label>Enter Task Number-</label><br>
+                    <input type="text" name="task" id="taskNumber" placeholder="Task" style="width: 20%;" required>
+                    <input type="text" name="todo" id="todo" placeholder="Insert Todo here" style="width : 70%;" disabled>
+                    <button onclick="sendJson()" type="submit">DELETE</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        function info(){
-            const task = document.getElementById('task').value;
-            const formData = new Object;
-            formData.task = task;
-            deleteTodo(JSON.stringify(formData));
+        let userSession = window.localStorage.getItem('userId');
+        sendJson = () => {
+            let taskNumber = document.getElementById('taskNumber').value;
+            let res = new Object;
+            res.taskNumber = taskNumber;
+            deleteTodo(res);
+            alert(`Task ${taskNumber} deleted!`);
         }
-
-        function deleteTodo(formData){
-            const http = new XMLHttpRequest;
-            http.open('POST', 'http://localhost:3000/delete/2/100', true, {
-                task : formData.task,
-            });
-
-            http.onload = () => {
-                const res = http.response;
-                const data = JSON.parse(res)
-                console.log(data)
-            }
-
-            http.send(formData)
+        deleteTodo = (info) => {
+            fetch('http://localhost:3000/deleteTodo', {
+                method : 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body : JSON.stringify({
+                    actionInfo : {action_id : "my_operation"},
+                    sessionData : {userId : userSession},
+                    formData : {taskNumber : info.taskNumber}
+                })})
+                    .then(res => res.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.log(error));
         }
     </script>
 </body>
