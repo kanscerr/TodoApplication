@@ -1,6 +1,6 @@
 # TODO CLOUD
 ***
-A Todo web application, equipped with database (mongoDB) and performs CRUD operation namely-
+A mobile responsive Todo web application, equipped with database (mongoDB) that performs CRUD operation namely-
 - Adding todos 
 - Deleting todos
 - Modifying todos
