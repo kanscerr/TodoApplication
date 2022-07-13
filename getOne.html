@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna" rel="stylesheet" type="text/css"/>
+    <title>Get Todo</title>
+    <style>
+    @import url(//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna);        
+        body{
+            background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
+            height: 100vh;
+            }
+        .goBack{
+            width: 70%;
+            aspect-ratio: 1/1;
+            border: none;
+            outline: none;
+            color: rgb(120, 39, 39);
+            background: none;
+        }
+        .goBack:focus{
+            border: none;
+            outline: none;
+            background: none;
+        }
+        .header{
+            font-weight: 900;
+            color: #353434;
+            text-align: center;
+            font-family: 'Etna';
+            margin-top: 5%;
+        }
+        .card{
+            width: 100%;
+            top: 20%;
+            background: rgb(245, 244, 244);
+            border-radius: 25px;
+        }
+        .circles{
+            color: #4f4e4d;
+            margin-top: -20px;
+        }
+        .cardHeader{
+            color: #383737;
+            font-family: 'Segoe UI';
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .form{
+            width: 100%;
+        }
+        input{
+            display: flex;
+            justify-content: space-between;
+            outline: none;
+            border: 2px solid rgb(123, 122, 122);
+            border-radius: 25px;
+            width: 80%;
+            color: #424242;
+            background: none;
+            padding-left: 10px;
+            font-family: 'Calibri';
+        }
+        input:active{
+            border-top : none;
+            border-left: none;
+            border-right: none;
+            outline: none;
+        }
+        .centerPlace{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .form>button{
+            width: 6%;
+            aspect-ratio: 1/1;
+            justify-content: center;
+            background: #9b5858;
+            border: none;
+            color:#ded8d8;
+            margin-left: 10px;
+        }
+        .form>button:hover{
+            background: rgb(73, 73, 73);
+        }
+        .form>button:focus{
+            outline: none;
+            border: none;
+        }
+        #todo{
+                margin-left: 10px;
+            }
+        .alreadyExisting{
+            width: fit-content;
+            color: #7a7777;
+            font-family: 'Calibri';
+            margin-top: 10px;
+            margin-bottom: -30px;
+        }
+        a{
+            color: #7a7777;
+            text-decoration: none;
+        }
+        a:hover{
+            color: #2f2e2e;
+            text-decoration: none;
+        }
+        .flex{
+            margin-top: 130px;
+        }
+        .flex > button{
+            width: 20%;
+            aspect-ratio: 4/1;
+            border-radius: 25px;
+            background: #646262;
+            border: 2px solid #646262;
+            color: #ded8d8;
+        }
+        .showTodo{
+            margin-top: 130px;
+            color: rgb(61, 59, 59);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 900;
+        }
+        @media all and (max-width: 600px) {
+            .form>button{
+                width: 10%;
+                aspect-ratio: 1/1;
+                justify-content: center;
+                background: #9b5858;
+                border: none;
+                color:#ded8d8;
+                margin-left: 10px;
+            }
+            input{
+                display: flex;
+                justify-content: space-between;
+                outline: none;
+                border: 2px solid rgb(123, 122, 122);
+                border-radius: 25px;
+                width: 80%; 
+                aspect-ratio: 5/1;
+                color: #424242;
+                background: none;
+                padding-left: 10px;
+                font-family: 'Calibri';
+            }
+            input:active{
+                border-top : none;
+                border-left: none;
+                border-right: none;
+                outline: none;
+            }
+            .header{
+                font-size: 0.2vh;
+                font-weight: 900;
+                color: #535354;
+                text-align: center;
+                font-family: 'Etna';
+                margin-top: 15%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">
+                <button class="goBack" onclick="goBack()" type="submit"><h1><b>&#10005;</b></h1></button>
+            </div>
+            <div class="col-lg-10">
+                <div class="header"><h1><b>T O D O &nbsp; C L O U D</b></h1></div>
+                <div class="card" id="card">
+                    <div class="card-body">
+                        <label>Enter Task Number-</label><br>
+                        <div class="form d-flex flex-row justify-content-between">
+                            <input type="text" name="task" id="taskNumber" placeholder="Task Number" style="width: 20%;" required>
+                            <input type="text" name="todo" id="todo" placeholder="Insert Todo here" style="background: rgb(194, 192, 192); border : none" disabled>
+                            <button onclick="sendJson()" type="submit"><h1><b>&rarr;</b></h1></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="showTodo" id="showTodo"><h3></h3></div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+    <script>
+        let userSession = window.localStorage.getItem('userId');
+        sendJson = () => {
+            let taskNumber = document.getElementById('taskNumber').value;
+            let res = new Object;
+            res.taskNumber = taskNumber;
+            getTodo(res);
+            
+        }
+        getTodo = (info) => {
+            fetch('http://localhost:3000/getOneTodo', {method : 'POST', 
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+                actionInfo : {action_id : "my_operation"},
+                sessionData : {userId : userSession},
+                formData : {taskNumber : info.taskNumber}}
+            )})
+                .then(res => res.json())
+                .then(data => document.getElementById('showTodo').innerHTML = data.todo)
+                .catch(error => console.log(error))
+        }  
+        goBack = () => {
+            window.location.href = 'addTodo.html';
+        }
+    </script>
+
+
+</body>
+</html>

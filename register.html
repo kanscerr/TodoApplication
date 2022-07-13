@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Register</title>
+    <style>
+        body{
+            background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
+            height: 100vh;
+        }
+        .header{
+            font-size: large;
+            font-weight: 900;
+            color: #B4CAF1;
+            text-align: center;
+            font-family: 'Segoe UI';
+            margin-top: 5%;
+        }
+        .upperDots{
+            color: white;
+            float: left;
+        }
+        .cardOutsider{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .card{
+            width: 100%;
+            top: 20%;
+            background: rgb(245, 244, 244);
+            margin-bottom: -7%;
+            border-radius: 25px;
+        }
+        .circles{
+            color: #4f4e4d;
+            margin-top: -20px;
+        }
+        .cardHeader{
+            color: #383737;
+            font-family: 'Segoe UI';
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid #9b9a99;
+            border-radius: 25px;
+            outline: none;
+            width: 70%;
+            aspect-ratio: 8/1;
+            color: #424242;
+            background: none;
+            padding-left: 10px;
+            font-family: 'Calibri';
+        }
+        input:active{
+            border-top : none;
+            border-left: none;
+            border-right: none;
+            outline: none;
+        }
+        .centerPlace{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            width: 70%;
+            aspect-ratio: 3/1;
+            background: #646262;
+            border: 2px solid #646262;
+            color:#ded8d8;
+            border-radius: 25px;
+            margin-top: 2%;
+        }
+        button:hover{
+            background: rgb(73, 73, 73);
+        }
+        .alreadyExisting{
+            width: fit-content;
+            color: #7a7777;
+            font-family: 'Calibri';
+            margin-top: 10px;
+            margin-bottom: -30px;
+        }
+        a{
+            color: #7a7777;
+            text-decoration: none;
+        }
+        a:hover{
+            color: #2f2e2e;
+            text-decoration: none;
+        }
+    </style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="shadow-lg p-3 mb-5 bg-body card">
+                    <div class="card-body">
+                        <div class="circles">&#9675 &#9675 &#9675</div>
+                        <div class="cardHeader"><h5><b>Register</b></h5></div>
+                        <div class="form">
+                            <input type="text" placeholder="username" id="username" autocomplete="off" required/> <br>
+                            <input type="email" placeholder="email" id="email" autocomplete="off" required/><br>
+                            <input type="password" placeholder="password" id="password" required><br>
+                            <div class="centerPlace">
+                                <button onclick="submit()" type="submit"><b>SIGN UP</b></button>
+                                <div class="alreadyExisting"><p><a href="login.html">Already have an account? Login</a></p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+
+    
+    <script>
+        function submit(){
+            const username = document.getElementById('username').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            const res = new Object;
+            res.username = username;
+            res.email = email;
+            res.password = password;
+            registerUser(res);
+            alert("Registration complete! Login to use");
+            window.location.href = 'login.html';
+        }
+        
+        registerUser = (info) => {
+            fetch('http://localhost:3000/register', {method : 'POST',
+            headers : {'Content-Type' : 'application/json'}, 
+            body : JSON.stringify({
+                username : info.username,
+                email : info.email,
+                password : info.password
+            })})
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(error => console.log("error!"))
+        }
+    </script>
+</body>
+</html>

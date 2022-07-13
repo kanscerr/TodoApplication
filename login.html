@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Login</title>
+    <style>
+        body{
+            background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
+            height: 100vh;
+        }
+        .header{
+            font-size: large;
+            font-weight: 900;
+            color: #B4CAF1;
+            text-align: center;
+            font-family: 'Segoe UI';
+            margin-top: 5%;
+        }
+        .upperDots{
+            color: white;
+            float: left;
+        }
+        .card{
+            width: 100%;
+            top: 20%;
+            background: rgb(245, 244, 244);
+            margin-bottom: -7%;
+            border-radius: 25px;
+        }
+        .circles{
+            color: #4f4e4d;
+            margin-top: -20px;
+        }
+        .cardHeader{
+            color: #383737;
+            font-family: 'Segoe UI';
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid #9b9a99;
+            border-radius: 25px;
+            outline: none;
+            width: 80%;
+            aspect-ratio: 8/1;
+            color: #424242;
+            background: none;
+            padding-left: 10px;
+            font-family: 'Calibri';
+        }
+        input:active{
+            border-top : none;
+            border-left: none;
+            border-right: none;
+            outline: none;
+        }
+        .centerPlace{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            width: 70%;
+            aspect-ratio: 3/1;
+            background: #646262;
+            border: 2px solid #646262;
+            color:#ded8d8;
+            border-radius: 25px;
+            margin-top: 2%;
+        }
+        button:hover{
+            background: rgb(73, 73, 73);
+        }
+        .alreadyExisting{
+            width: fit-content;
+            color: #7a7777;
+            font-family: 'Calibri';
+            margin-top: 10px;
+            margin-bottom: -30px;
+        }
+        a{
+            color: #7a7777;
+            text-decoration: none;
+        }
+        a:hover{
+            color: #2f2e2e;
+            text-decoration: none;
+        }
+    </style>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 mx-auto">
+                <div class="shadow-lg p-3 mb-5 bg-body card my-auto">
+                    <div class="card-body">
+                        <div class="circles">&#9675 &#9675 &#9675</div>
+                        <div class="cardHeader"><h5><b>Login</b></h5></div>
+                        <div class="form">
+                            <input type="text" placeholder="username" id="username" autocomplete="off" required/> <br>
+                            <input type="password" placeholder="password" id="password" required><br>
+                            <div class="centerPlace">
+                                <button onclick="submit()" type="submit"><b>LOGIN</b></button>
+                                <div class="alreadyExisting"><p><a href="register.html">Don't have an account? Register</a></p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+    <script>
+        function submit(){
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let res = new Object;
+            res.username = username;
+            res.password = password;
+            validateLogin(res);
+            alert("Login complete!");
+            window.location.href = 'addTodo.html';
+        }
+        validateLogin = (info) => {
+            fetch('http://localhost:3000/login', {method: 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body: JSON.stringify({
+                actionInfo : {action_id : "my_operation"},
+                formData : {username : info.username, password : info.password}
+            })})
+                .then(res => res.json())
+                .then(data => {
+                    window.localStorage.setItem('userId', JSON.stringify(data.userId))
+                    let sessionData = window.localStorage.getItem('userId')
+                    console.log("sessionData", sessionData)
+                })
+                .catch(error => console.log('error'));
+        }
+    </script>
+</body>
+</html>
