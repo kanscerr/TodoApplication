@@ -93,7 +93,7 @@ app.post('/login', (req, res) => {
 
 //adding todo against a user
 app.post('/addTodo', (req, res) => {
-    if(req.body.formData){
+    if(req.body.actionInfo && req.body.formData){
         const newData = {taskNumber: req.body.formData.taskNumber, todo : req.body.formData.todo, isDeleted : false}
         model.findOneAndUpdate(
             {userId : req.body.sessionData.userId},
@@ -119,7 +119,7 @@ app.post('/addTodo', (req, res) => {
 //getting all todos of a user
 app.post('/getAllTodo', (req, res) => {
     let todoArr = []
-    if(req.body.actionInfo && req.body.sessionData.userId==100){
+    if(req.body.actionInfo){
         model.findOne(
             {userId : req.body.sessionData.userId},
             (error, result) => {
@@ -149,7 +149,7 @@ app.post('/getAllTodo', (req, res) => {
 
 //getting one todo against a user
 app.post('/getOneTodo', (req, res) => {
-    if(req.body.actionInfo && req.body.sessionData.userId==100 && req.body.formData){
+    if(req.body.actionInfo && req.body.formData){
         model.findOne(
             {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
             (error, result) => {
@@ -186,7 +186,7 @@ app.post('/getOneTodo', (req, res) => {
 
 //delete a todo against a user
 app.post('/deleteTodo', (req, res) => {
-    if(req.body.actionInfo && req.body.sessionData.userId==100 && req.body.formData){
+    if(req.body.actionInfo && req.body.formData){
         model.find(
             {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
             (error, result) => {
@@ -220,7 +220,7 @@ app.post('/deleteTodo', (req, res) => {
 
 //updating a todo against a user
 app.post('/updateTodo', (req, res) => {
-    if(req.body.actionInfo && req.body.sessionData.userId==100 && req.body.formData){
+    if(req.body.actionInfo && req.body.formData){
         model.findOne(
             {userId : req.body.sessionData.userId},
             (error, result) => {
