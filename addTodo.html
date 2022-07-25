@@ -102,7 +102,6 @@
         .flex > button{
             width: 20%;
             aspect-ratio: 4/1;
-            border-radius: 25px;
             background: #4b4b4b;
             border: 2px solid #4b4b4b;
             color: #ded8d8;
@@ -115,6 +114,7 @@
             background: none;
             outline: none;
             border: none;
+            margin-top: 20px;
         }
         .logoutBtn:focus{
             background: none;
@@ -167,7 +167,9 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-1"></div>
+            <div class="col-lg-1">
+                <button onclick="logout()" title="logout" class="logoutBtn"><h2>&#10094;</h2></button>
+            </div>
             <div class="col-lg-10">
                 <div class="header"><h1><b>T O D O &nbsp; C L O U D</b></h1></div>
                 <div class="main"></div>
@@ -189,9 +191,7 @@
                 </div>
             </div>
            
-            <div class="col-lg-1">
-                <button onclick="logout" class="logoutBtn"><img class="logout" src="/images/logout.png" alt="user-profile"></button>
-            </div>
+            <div class="col-lg-1"></div>
         </div>
     </div>
 
@@ -241,6 +241,12 @@
         }
         updateTodo = () => {
             window.location.href = 'update.html';
+        }
+        logout = () => {
+            if(confirm('Do you want to log out?')){
+                window.localStorage.removeItem('userId');
+                window.location.href = 'login.html';
+            }
         }
     </script>
 </body>
