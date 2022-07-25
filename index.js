@@ -29,20 +29,23 @@ app.post('/register', (req, res) => {
             }) 
             if(req.body.username && req.body.email && req.body.password){
                 //for checking if the username is available
-                model.findOne({'userInfo.username' : req.body.username}, (error, result) => {
+                //fixing required
+                model.findOne(
+                {'userInfo.username' : req.body.username}, 
+                (error, result) => {
                     if(result == null){
                         const data = newUser.save();
-                        res.send(newUser)      
+                        res.json("Registered Successfully!")      
                     }
                     else{ 
                         let final = result.userInfo.username
                         if(final == req.body.username){
-                        res.send({error : "Username not valid!"});
+                        res.json("Username not valid!");
                     }}
                 })
             }
             else{
-                res.send({error : "Not enough information!"})
+                res.json("Not enough information!")
             }
         }
         else{
@@ -57,17 +60,17 @@ app.post('/register', (req, res) => {
                 model.findOne({'userInfo.username' : req.body.username}, (error, result) => {
                     if(result == null){
                         const data = newUser.save();
-                        res.send(newUser);      
+                        res.json("Registered Successfully!");      
                     }
                     else{ 
                         let final = result.username
                         if(final == req.body.username){
-                        res.send({error : "Username not valid!"});
+                        res.json("Username not valid!");
                     }}
                 })
             }
             else{
-                res.send({error : "Not enough information!"})
+                res.json("Not enough information!")
             }
         }
     })
@@ -80,11 +83,10 @@ app.post('/login', (req, res) => {
             {'userInfo.username' : req.body.formData.username, 'userInfo.password' : req.body.formData.password},
             (error, result) => {
                 if(result){
-                    
-                    res.send(result);
+                    res.json("Login Successful!");
                 }
                 else{
-                    res.send({error : "Login credentials invalid!"})
+                    res.json("Login credentials invalid!")
                 }
             }
         )
@@ -95,15 +97,26 @@ app.post('/login', (req, res) => {
 app.post('/addTodo', (req, res) => {
     if(req.body.actionInfo && req.body.formData){
         const newData = {taskNumber: req.body.formData.taskNumber, todo : req.body.formData.todo, isDeleted : false}
-        model.findOneAndUpdate(
-            {userId : req.body.sessionData.userId},
-            {$push : {formData : newData}},
+        model.find(
+            {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
             function(error, result){
-                if(result){
-                    res.send(result)
+                if(result.length!= 0){
+                    console.log(result);
+                    res.send("A todo with task number already exists")
                 }
                 else{
-                    res.send({error : "Oops! Something went wrong."})
+                    model.findOneAndUpdate(
+                        {userId : req.body.sessionData.userId},
+                        {$push : {formData : newData}},
+                        function(error, result){
+                            if(result){
+                                res.send(result)
+                            }
+                            else{
+                                res.send({error : "Oops! Something went wrong."})
+                            }
+                        }
+                    )
                 }
             }
         )
