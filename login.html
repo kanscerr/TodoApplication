@@ -129,12 +129,15 @@
         function submit(){
             let username = document.getElementById('username').value;
             let password = document.getElementById('password').value;
-            let res = new Object;
-            res.username = username;
-            res.password = password;
-            validateLogin(res);
-            alert("Login complete!");
-            window.location.href = 'addTodo.html';
+            if(username=="" || password==""){
+                alert("Kindly, fill all the fields.")
+            }
+            else{
+                let res = new Object;
+                res.username = username;
+                res.password = password;
+                validateLogin(res);
+            }
         }
         validateLogin = (info) => {
             fetch('http://localhost:3000/login', {method: 'POST',
@@ -145,11 +148,16 @@
             })})
                 .then(res => res.json())
                 .then(data => {
-                    window.localStorage.setItem('userId', JSON.stringify(data.userId))
-                    let sessionData = window.localStorage.getItem('userId')
-                    console.log("sessionData", sessionData)
+                    window.localStorage.setItem('userId', JSON.stringify(data.userId));
+                    let sessionData = window.localStorage.getItem('userId');
+                    if(data == "Login Successfully!"){
+                        window.location.href = 'addTodo.html';
+                    }
+                    else{
+                        alert(data);
+                    }
                 })
-                .catch(error => console.log('error'));
+                .catch(error => console.log(error));
         }
     </script>
 </body>
