@@ -10,7 +10,7 @@
     <style>
     @import url(//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna);        
         body{
-            background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
+            background: #1F1E24;
             height: 100vh;
         }
         .goBack{
@@ -18,7 +18,7 @@
             aspect-ratio: 1/1;
             border: none;
             outline: none;
-            color: rgb(120, 39, 39);
+            color: rgb(166, 54, 54);
             background: none;
         }
         .goBack:focus{
@@ -28,15 +28,19 @@
         }
         .header{
             font-weight: 900;
-            color: #353434;
+            background: linear-gradient(to left,#695BCD, #FDAAFA);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-align: center;
             font-family: 'Etna';
+            font-size: 2rem;
             margin-top: 5%;
         }
         .card{
             width: 100%;
             top: 20%;
-            background: rgb(245, 244, 244);
+            background:#CFF7FF;
             border-radius: 25px;
         }
         .circles{
@@ -59,8 +63,9 @@
             justify-content: space-between;
             outline: none;
             border: 2px solid rgb(123, 122, 122);
-            border-radius: 25px;
+            border-radius: 10px;
             width: 80%;
+            aspect-ratio: 13/1;
             color: #424242;
             background: none;
             padding-left: 10px;
@@ -72,6 +77,9 @@
             border-right: none;
             outline: none;
         }
+        input::placeholder{
+            font-size: 0.8rem;
+        }
         .centerPlace{
             display: flex;
             flex-direction: column;
@@ -79,20 +87,24 @@
             align-items: center;
         }
         .form>button{
-            width: 6%;
+            width: max-content;
             aspect-ratio: 1/1;
             justify-content: center;
-            background: #9b5858;
+            background: #94B5EA;
             border: none;
-            color:#ded8d8;
+            color:rgb(70, 69, 69);
             margin-left: 10px;
         }
         .form>button:hover{
-            background: rgb(73, 73, 73);
+            background: #7f9fd3;
+        }
+        .form>button:focus{
+            outline: none;
+            border: none;
         }
         #todo{
-                margin-left: 10px;
-            }
+            margin-left: 10px;
+        }
         .alreadyExisting{
             width: fit-content;
             color: #7a7777;
@@ -126,99 +138,90 @@
             font-weight: 900;
         }
         @media all and (max-width: 600px) {
-            .form>button{
-                width: 10%;
-                aspect-ratio: 1/1;
-                justify-content: center;
-                background: #9b5858;
-                border: none;
-                color:#ded8d8;
-                margin-left: 10px;
-            }
-            input{
-                display: flex;
-                justify-content: space-between;
-                outline: none;
-                border: 2px solid rgb(123, 122, 122);
-                border-radius: 25px;
-                width: 80%; 
-                aspect-ratio: 5/1;
-                color: #424242;
-                background: none;
-                padding-left: 10px;
-                font-family: 'Calibri';
-            }
-            input:active{
-                border-top : none;
-                border-left: none;
-                border-right: none;
-                outline: none;
-            }
             .header{
-                font-size: 0.2vh;
                 font-weight: 900;
                 color: #535354;
                 text-align: center;
                 font-family: 'Etna';
-                margin-top: 15%;
+                font-size: 2rem;
+                margin-top: 25%;
             }
-        }
+        } 
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-1">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-1">
                 <button class="goBack" onclick="goBack()" type="submit"><h1><b>&#10005;</b></h1></button>
             </div>
-            <div class="col-lg-10">
-                <div class="header"><h1><b>T O D O &nbsp; C L O U D</b></h1></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                <div class="header"><b>T O D O &nbsp; C L O U D</b></div>
                 <div class="card" id="card">
                     <div class="card-body">
                         <label>Update todo-</label><br>
                         <div class="form d-flex flex-row justify-content-between">
-                            <input type="text" name="task" id="taskNumber" placeholder="Task Number" style="width: 20%;" required>
+                            <input type="text" name="task" id="taskNumber" style="width: 20%;" required>
                             <input type="text" name="todo" id="todo" placeholder="Insert Todo here" diabled>
-                            <button onclick="sendJson()" type="submit"><h1><b>&rarr;</b></h1></button>
+                            <button class="submitBtn" onclick="sendJson()" type="submit"><h1><b>&rarr;</b></h1></button>
                         </div>
                     </div>
                 </div>
                 <div class="showTodo" id="showTodo"><h3></h3></div>
             </div>
-            <div class="col-lg-1"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-1"></div>
         </div>
     </div>
     <script>
+        //putting cursor in input field by default
+        document.getElementById('todo').focus();
+
+        //accessing 2 data sets from local storage
         let userSession = window.localStorage.getItem('userId');
+        let taskId = JSON.parse(window.localStorage.getItem('taskNumtoLocalStorage'));
+
+        //putting client side task number in the input field already
+        let taskNumberInput = document.getElementById("taskNumber");
+        taskNumberInput.setAttribute('value' , taskId.taskNumClientSide);
+
+        //firing updateTodo function
         sendJson = () => {
-            let taskNumber = document.getElementById('taskNumber').value;
             let todo = document.getElementById('todo').value;
-            let res = new Object;
-            res.taskNumber = taskNumber;
-            res.todo = todo;
-            updateTodo(res);
-            alert(`Task ${taskNumber} updated to ${todo}`);
+            if(todo == ""){
+                alert("Kindly fill the field!")
+            }
+            else{
+                let res = new Object;
+                res.taskNumber = taskId.taskNumBackend;
+                res.todo = todo;
+                updateTodo(res);
+            }
         }
+        
+        //http request for updating todo in db
         updateTodo = (info) => {
             fetch('http://localhost:3000/updateTodo', {
                 method : 'POST',
                 headers : {'Content-Type' : 'application/json'},
                 body : JSON.stringify({
                     actionInfo : {action_id : 'my_operation'},
-                    sessionData : {userId : userSession},
+                    sessionData : {userid : userSession},
                     formData : {taskNumber : info.taskNumber, todo : info.todo}
                 }) 
             })
                 .then(res => res.json())
-                .then(data => console.log(data))
-                .catch(error => console.log('Oops! Something went wrong!'));
+                .then(data => {
+                    if(data == "Updated!"){{
+                        document.getElementById('taskNumber').value = "";
+                        document.getElementById('todo').value = "";
+                        window.history.back();
+                    }}
+                })
+                .catch(error => alert(error));
         }
         goBack = () => {
-            window.location.href = 'addTodo.html';
+            window.history.back();
         }
     </script>
-
-
-
 </body>
 </html>

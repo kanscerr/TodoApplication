@@ -5,161 +5,363 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link href="//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna" rel="stylesheet" type="text/css"/>
-    <title>Todo Cloud</title>
+    <link href='https://fonts.googleapis.com/css?family=Archivo Black' rel='stylesheet'>
+    <link href="//db.onlinewebfonts.com/c/31289605526ecb7d69de7bc881ffa25c?family=Vesterbro" rel="stylesheet" type="text/css"/>
+    <link href="//db.onlinewebfonts.com/c/9a4b138bd9c8e1eba20dbd6a0bb1d832?family=Cooper+Black" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/084e265d78.js" crossorigin="anonymous"></script>
+    <title>TodoCloud</title>
     <style>
-    @import url(//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna);        
-    body{
-        background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
-        height: 100vh;
+        @import url(//db.onlinewebfonts.com/c/31289605526ecb7d69de7bc881ffa25c?family=Vesterbro);
+        @import url(//db.onlinewebfonts.com/c/9a4b138bd9c8e1eba20dbd6a0bb1d832?family=Cooper+Black);
+        @font-face {
+            font-family: 'maple drive';
+            src: url(font/demo-maple-drive.otf);
         }
-        .header{
-            font-weight: 900;
-            color: #353434;
-            text-align: center;
-            font-family: 'Etna';
-            margin-top: 5%;
+        html{
+            scroll-behavior: smooth;
         }
-        .card{
-            width: 100%;
-            top: 20%;
-            background: rgb(245, 244, 244);
-            border-radius: 25px;
-            padding-bottom: 10px;
+        /* give different display mode  */
+        /* html{
+            filter: invert(1) hue-rotate(240deg) saturate(200%) sepia(20%);
+        } */
+        body{
+            background: #1F1E24;
+            min-height: 100vh;
         }
-        .circles{
-            color: #4f4e4d;
-            margin-top: -20px;
+        .col-lg-2{
+            background: #232328;
         }
-        .cardHeader{
-            color: #383737;
-            font-family: 'Segoe UI';
-            text-align: center;
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 20px;
+        .menuBtn{
+            display: none;
         }
-        .form{
-            width: 100%;
+        .sidebar{
+            width: 8.3%;
+            background: #232328;
+            z-index: 2;
         }
-        input{
-            display: flex;
-            justify-content: space-between;
+        .col-lg-10{
+            z-index: 1;
+        }
+        .logo{
+            width: 30px;
+            height: 30px;
+        }
+        .textPart{
+            float: left;
+        }
+        .appName{
+            font-family: 'Archivo Black';
+            color: white;
+            margin-top: 30px;
+        }
+        .options{
+            margin-top: 40px;
+        }
+        .options>button{
+            background: transparent;
+            color: #8c8e92;
+            border: none;
+            text-align: left;
+            font-size:small;
+            font-weight: bold;
+        }
+        .options>button:hover, .bottom>button:hover{
+            /* background: #6D5ED3; */
+            color: white;
+            border-radius: 5px;
             outline: none;
-            border: 2px solid rgb(123, 122, 122);
-            border-radius: 25px;
-            width: 80%;
-            color: #424242;
-            background: none;
-            padding-left: 10px;
-            font-family: 'Calibri';
         }
-        input:active{
-            border-top : none;
-            border-left: none;
-            border-right: none;
+        .options>button:focus, .bottom>button:focus{
+            color: white;
+            border-radius: 5px;
             outline: none;
         }
-        #todo{
-                margin-left: 10px;
-        }
-        .centerPlace{
+        .options>.profile>.drop-down{
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-evenly;
             align-items: center;
+            display: none;
+            color: white;
+            text-align: center;
+            padding-top: 40px;
         }
-        .form>button{
-            width: 6%;
-            aspect-ratio: 1/1;
-            justify-content: center;
-            background: #9b5858;
+        .options>.profile:hover .drop-down{
+            display: block;
+            background: #2e333d;
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+        }
+        .drop-down>#email{
+            font-size: x-small;
+        }
+        .theme{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .themeOptions{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            display: none;
+        }
+        .theme:hover .themeOptions{
+            display: flex;
+        }
+        .blackPurple{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #343338 50%, #8A75E3 50%);
+        }
+        .whiteGreen{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #E7ECDE 50%, #1FA183 50%);
+        }
+        .whitePink{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #F8E7E2 50%, #F255C1 50%);
+        }
+        .bottom{
+            margin-top: 80px;
+        }
+        .bottom>button{
+            width: 100%;
+            position: absolute;
+            bottom: 5%;
+            background: transparent;
+            color: #8c8e92;
             border: none;
-            color:#ded8d8;
-            margin-left: 10px;
+            text-align: left;
+            font-size:small;
+            font-weight: bold;
         }
-        .form>button:hover{
-            background: rgb(73, 73, 73);
+        .textbydev{
+            font-size: x-small;
+            font-weight: bolder;
+            color: #8c8e92;
+            position: absolute;
+            bottom: -20%;
         }
-        .alreadyExisting{
-            width: fit-content;
-            color: #7a7777;
+        .main{
+            margin-top: 30px;
+        }
+        .greet>h1{
+            font-family: 'maple drive';
+            font-size: x-large;
+            color: white;
+        }
+        .greet>p{
+            font-family: 'maple drive';
+            font-size: smaller;
+            color: white;
+        }
+        .app{
+            background: linear-gradient(130deg, #6D5ED3, #A388F1);
+            color: white;
+            min-height: 170px;
+            border-radius: 15px;
+            font-family: 'maple drive';
+        }
+        .appFullName{
+            margin-left: 40px;
+            padding-top: 20px;
+        }
+        .quote{
+            margin-left: 40px;
+            color: rgb(218, 217, 217);
+        }
+        .quote>p{
+            font-size: smaller;
+        }
+        .app>button{
+            background: #1E0942;
+            color: #DCE2FF;
+            border: none;
+            border-radius: 10px;
+            margin-left: 40px;
+            width: 18%;
+            aspect-ratio: 5/1.2;
             font-family: 'Calibri';
-            margin-top: 10px;
-            margin-bottom: -30px;
+            font-weight: bolder;
+            box-shadow: 3px 3px 3px #170536;
         }
-        a{
-            color: #7a7777;
-            text-decoration: none;
-        }
-        a:hover{
-            color: #2f2e2e;
-            text-decoration: none;
-        }
-        .flex{
-            margin-top: 130px;
-        }
-        .flex > button{
-            width: 20%;
-            aspect-ratio: 4/1;
-            background: #4b4b4b;
-            border: 2px solid #4b4b4b;
-            color: #ded8d8;
-        }
-        .logout{
-            width: 60%;
-            margin-top: 40%;
-        }
-        .logoutBtn{
-            background: none;
-            outline: none;
-            border: none;
+        .insertBottom{
+            display: grid;
+            grid-template-columns: 1.5fr 2fr;
+            grid-template-rows: 230px;
+            color: white;
+            gap: 20px;
             margin-top: 20px;
         }
-        .logoutBtn:focus{
-            background: none;
-            outline: none;
-            border: none;
+        .todoList{
+            width: 100%;
+            background: #242831;
+            overflow-y: scroll;
+            border-radius: 15px;
+            text-align: center;
         }
-        @media all and (max-width: 600px) {
-            .form>button{
-                width: 10%;
-                aspect-ratio: 1/1;
-                justify-content: center;
-                background: #9b5858;
+        .todoList::-webkit-scrollbar{
+            display: none;
+        }
+        .addTodo{
+            width: 100%;
+            background: #242831;
+            text-align: center;
+            border-radius: 15px;
+        }
+        .addTodo>.heading{
+            font-family: 'Cooper Black';
+            font-weight: bolder;
+            color: white;
+            margin-top: 20px;
+        }
+        .addTodo>input{
+            width: 90%;
+            border: none;
+            border-bottom: 2px solid rgb(219, 216, 216);
+            background: none;
+            margin-top: 20px;
+            margin-left: 20px;
+            color: rgb(176, 173, 173);
+            font-family: 'Calibri';
+            font-weight: bold;
+        }
+        .addTodo>input:focus{
+            outline: none;
+        }
+        .addTodo>button{
+            width: 20%;
+            margin: auto;
+            margin-top: 60px;
+            background: #F08647;
+            font-size: x-large;
+            color: white;
+            border: none;
+            border-radius: 2px;
+            outline: none;
+        }
+        .addTodo>button:focus{
+            border: none;
+            outline: none;
+        }
+        .addTodo>button:hover{
+            background: #db6e2e;
+            border: none;
+            outline: none;
+        }
+        .todoList>h5{
+            font-family: 'Cooper Black';
+            font-weight: bolder;
+            color: white;
+            margin-top: 20px;
+        }
+        .todos{
+            display: flex;
+            flex-direction: row;
+            column-gap: 20px;
+            background: #2E323B;
+            margin: 10px;
+            padding: 10px;
+            width: 100%;
+            aspect-ratio: 6/1;
+            border-radius: 10px;
+            color: white;
+        }
+        .todos:hover{
+            background: #353842;
+        }
+        .squareInside{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: x-large;
+            width: 80px;
+            aspect-ratio: 1/1;
+            background: rgb(240, 240, 130);
+            color: black;
+            border-radius: 10px;
+        }
+        .profilePage{
+            background: yellow;
+            width: 500px;
+            content: "hry";
+        }
+        .allTodo{
+            overflow: hidden;
+            width: 70%;
+        }
+        .writtenTodo{
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .todoWithOptions{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 80px;
+            margin: auto;
+            margin-top: 20px;
+            padding-left: 20px;
+            background: #242831;
+            border-radius: 15px;
+            color: white;
+        }
+        .todoWithOptions:hover{
+            background: #2E323B;
+        }
+        .crud-Op-btn{
+            max-width: 80px;
+            max-height: 40px;
+            float: right;
+            margin-right: 20px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background: #F08647;
+        }
+        .crud-Op-btn:hover{
+            background: #db6e2e;
+            border: none;
+            outline: none;
+        }
+        .crud-Op-btn:focus{
+            border: none;
+            outline: none;
+        }
+        
+        @media (max-width:980px) {
+            .menuBtn{
+                position: static;
+                display: block;
+                color: #DCE2FF;
+                background: transparent;
                 border: none;
-                color:#ded8d8;
-                margin-left: 10px;
-            }
-            input{
-                display: flex;
-                justify-content: space-between;
-                outline: none;
-                border: 2px solid rgb(123, 122, 122);
-                border-radius: 25px;
-                width: 80%; 
-                aspect-ratio: 5/1;
-                color: #424242;
-                background: none;
-                padding-left: 10px;
-                font-family: 'Calibri';
-            }
-            input:active{
-                border-top : none;
-                border-left: none;
-                border-right: none;
                 outline: none;
             }
-            #todo{
-                margin-left: 10px;
+            .sidebar{
+                display: none;
+                background: #232328;
+                z-index: 2;
+                height: 100vh;
+                width: 50%;
+                transition: all 0.3s ease;
             }
-            .header{
-                font-size: 0.2vh;
-                font-weight: 900;
-                color: #535354;
-                text-align: center;
-                font-family: 'Etna';
-                margin-top: 15%;
+            .insertBottom{
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 230px, 230px;
+                color: white;
+                gap: 20px;
+                margin-top: 20px;
             }
         }
     </style>
@@ -167,87 +369,265 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-1">
-                <button onclick="logout()" title="logout" class="logoutBtn"><h2>&#10094;</h2></button>
+            <div class="col-lg-2">
+                <button class="fas fa-bars menuBtn" id="menuBtn"></button>
+                <div class="sidebar position-fixed" id="sidebar">
+                    <div class="appName d-flex flex-row">
+                        <img class="logo" src="/images/logo.png" alt="logo">
+                        <h3 class="textPart">loud.</h3>
+                    </div>
+                    <div class="options d-flex flex-column">
+                        <button class="profile" onmouseenter="profile()"><p>Profile</p>
+                            <div class="drop-down">
+                                <div class="fas fa-user userIcon"></div>
+                                <div id="username"></div>
+                                <div id="email"></div>
+                            </div>
+                        </button>
+                        <button class="getAll" onclick="getAllTodo()" id="getAlltodo"><p>Get All Todos</p></button>
+                        <button class="getOne"><p>Get One Todo</p></button>
+                        <button class="theme"><p>Theme</p>
+                            <section class="themeOptions">
+                                <a href="javascript: blackPurple()"><div class="blackPurple inverted" id="blackPurple"></div></a>
+                                <a href="javascript: whiteGreen()"><div class="whiteGreen inverted" id="whiteGreen"></div></a>
+                                <a href="javascript: whitePink()"><div class="whitePink inverted" id="whitePink"></div></a>
+                            </section>
+                        </button>
+                    </div>
+                    <div class="bottom">
+                        <button class="logout" onclick="logout()"><p>Logout</p></button>
+                    </div>
+                    <div class="textbydev"><p>Todo Cloud <br> created by kanscerr</p></div>
+                </div>
             </div>
-            <div class="col-lg-10">
-                <div class="header"><h1><b>T O D O &nbsp; C L O U D</b></h1></div>
-                <div class="main"></div>
-                <div class="card" id="card">
-                    <div class="card-body">
-                        <label>Add Todos-</label><br>
-                        <div class="form d-flex flex-row justify-content-between">
-                            <input type="text" name="task" id="taskNumber" placeholder="Task Number" style="width: 20%;" required>
-                            <input type="text" name="todo" id="todo" placeholder="Insert Todo here" required>
-                            <button onclick="sendJson()" type="submit"><b>&#x271A;</b></button>
+            <div class="col-lg-10 col-md-12">
+                <div class="main">
+                    <div class="greet">
+                        <h1 id="greeting"></h1>
+                        <p>Let us start the day together</p>
+                    </div>
+                    <div class="app">
+                        <div class="appFullName"><h1>Todo Cloud</h1></div>
+                        <div class="quote"><p>Do it little by little each day.</p></div>
+                        <button class="addTodoBtn" id="move-to-input">Add todo!</button>
+                    </div>
+                    <div class="insertBottom">
+                        <div class="addTodo d-flex flex-column">
+                            <div class="heading"><h3>Add Todo</h3></div>
+                            <input type="text" placeholder="Enter Todo" id="todo" autocomplete="off">
+                            <button type="submit" onclick="showTodo()">&#x271A;</button>
+                        </div>
+                        <!-- pseudo text -->
+                        <div class="todoList" id="todo-list">
+                            <h5>Recently Added Todos</h5>
                         </div>
                     </div>
-                </div>
-                <div class="flex d-flex justify-content-between">  
-                    <button onclick="getAllTodo()" type="submit">Get All Todo</button>
-                    <button onclick="getOneTodo()" type="submit">Get A Todo</button>
-                    <button onclick="deleteTodo()" type="submit">Delete Todo</button>
-                    <button onclick="updateTodo()" type="submit">Update Todo</button>
+                    <div class="mainBottom" id="mainBottom">
+                    </div>
                 </div>
             </div>
-           
-            <div class="col-lg-1"></div>
         </div>
     </div>
-
     <script>
-        let userSession = window.localStorage.getItem('userId');
-        sendJson = () => {
-            const taskNumber = document.getElementById('taskNumber').value;
-            const todo = document.getElementById('todo').value;
-            const res = new Object;
-            res.taskNumber = taskNumber;
-            res.todo = todo;
-            addTodo(res);
-            alert("New task added!")
-            document.getElementById('taskNumber').value = "";
-            document.getElementById('todo').value = "";
-        }
-        
-        addTodo = (info) => {
-            fetch('http://localhost:3000/addTodo', {method : 'POST',
-            headers : {'Content-Type' : 'application/json'},
-            body : JSON.stringify({
-                actionInfo : {action_id : 'my_operation'},
-                sessionData : {userId : userSession},
-                formData : {taskNumber : info.taskNumber, todo : info.todo}
-            })})
-                .then(res => res.json())
-                .then(data => console.log(data))
-                .catch(error => console.log('error'));
+        //accessing name, email, userId from local storage
+        userSession = JSON.parse(window.localStorage.getItem('dataToLocalStorage'));
+
+        //greet with name
+        window.onload = function(){
+            document.getElementById("greeting").innerHTML = "Hello, " + userSession.username;
         }
 
-        getAllTodo = () => {
-            fetch('http://localhost:3000/getAllTodo', {method : 'POST',
-            headers : {'Content-Type' : 'application/json'},
-            body : JSON.stringify({
-                actionInfo : {action_id : 'my_operation'},
-                sessionData : {userId : userSession}
-            })})
-                .then(res => res.json())
-                .then(data => console.log(data))
-                .catch(error => console.log('Oops! Something went wrong'))
-        }
-        getOneTodo = () => {
-            window.location.href = 'getOne.html';
-        }
-        deleteTodo = () => {
-            window.location.href = 'delete.html';
-        }
-        updateTodo = () => {
-            window.location.href = 'update.html';
-        }
-        logout = () => {
-            if(confirm('Do you want to log out?')){
-                window.localStorage.removeItem('userId');
-                window.location.href = 'login.html';
+        //trigger input from button click
+        let input = document.getElementById('todo');
+        const btn = document.getElementById('move-to-input');
+        btn.addEventListener('click', focusInput = ()=>{
+            input.focus();
+            document.querySelector('.addTodo').style.background = '#2e333d';
+        });
+
+        //firing addtodo function
+        function showTodo(){
+            const todo = document.getElementById('todo').value;
+            if(todo==""){
+                alert("fill the field!")
+            }
+            else{
+                const res = new Object;
+                res.todo = todo;
+                addTodo(res);
             }
         }
+        //adding todos to database
+        addTodo = (info) => {
+            fetch('http://localhost:3000/addTodo', 
+            {method : 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+                actionInfo : {action_id : 'my_operation'},
+                sessionData : {userId : userSession.userId},
+                formData : {todo : info.todo}
+            })})
+                .then(res => res.json())
+                .then(data => {
+                    // show todo in adjacent div
+
+                    //main div
+                    let div = document.createElement('div');
+                    div.className = "todos";
+
+                    //square box with task number
+                    let divInside = document.createElement('div');
+                    divInside.className = "fa-solid fa-arrow-right squareInside";
+
+                    //div with todo inside
+                    let writtenTodo = document.createElement('div');
+                    writtenTodo.innerHTML = data.todo;
+
+                    //pushing child divs inside parent div
+                    div.appendChild(divInside); 
+                    div.appendChild(writtenTodo);
+
+                    //clearing input field after successfully adding todos in database
+                    document.getElementById('todo-list').appendChild(div);
+                    document.getElementById('todo').value = "";
+                    document.getElementById('todo').focus();
+                })
+                .catch(error => console.log('error'));
+            }
+            
+            //logout
+            function logout(){
+                if(confirm('Do you want to log out?')){
+                window.localStorage.removeItem('dataToLocalStorage');
+                window.location.href = 'login.html';
+                }
+            }
+
+            //profile
+            profile = () => {
+                let profName = document.getElementById('username');
+                let profEmail = document.getElementById('email');
+                profName.innerText = userSession.username;
+                profEmail.innerText = userSession.email;
+            }
+
+            //get all todos
+            getAllTodo = () => {
+                fetch('http://localhost:3000/getAllTodo', {method : 'POST',
+                headers : {'Content-Type' : 'application/json'},
+                body : JSON.stringify({
+                    actionInfo : {action_id : 'my_operation'},
+                    sessionData : {userId : userSession.userId}
+                })})
+                    .then(res => res.json())
+                    .then(data => {
+                        //clearing all old todos
+                        document.getElementById('mainBottom').innerHTML = "";
+                        //hiding sidebar after click
+                        sidebar = document.getElementById('sidebar');
+                        if(window.matchMedia("(max-width: 980px)")){
+                            if(sidebar.style.display == 'block'){
+                                sidebar.style.display = 'none';
+                            }
+                        }
+                        for(let i=0;i<data.length;i++){
+                            //forming div for i number of tasks
+
+                            //main div
+                            let todoWithOptions = document.createElement('div');
+                            todoWithOptions.className = "todoWithOptions";
+
+                            //div with task number and todo inside
+                            let allTodo = document.createElement('div');
+                            allTodo.className = "allTodo";
+                            allTodo.innerHTML = (i+1) + ". " + data[i].todo; 
+
+                            //button for editing
+                            let edit = document.createElement('button');
+                            edit.className = "crud-Op-btn fas fa-edit";
+
+                            //button for deleting
+                            let del = document.createElement('button');
+                            del.className = "crud-Op-btn fas fa-trash";
+
+                            //button for marking task done ---incomplete---
+                            let done = document.createElement('button');
+                            done.className = "crud-Op-btn fas fa-check";
+
+                            //pushing all divs and button inside main div
+                            todoWithOptions.appendChild(allTodo);
+                            todoWithOptions.appendChild(edit);
+                            todoWithOptions.appendChild(del);
+                            todoWithOptions.appendChild(done);
+
+                            document.getElementById('mainBottom').appendChild(todoWithOptions);
+                            //scrolling to required div
+                            document.getElementById('todo-list').scrollIntoView();
+                            
+                            //moving to update.html to edit todo
+                            edit.addEventListener("click", () => {
+                                let taskNumtoLocalStorage = {'taskNumClientSide' : i+1, 'taskNumBackend' : data[i].taskNumber}
+                                window.localStorage.setItem('taskNumtoLocalStorage' ,JSON.stringify(taskNumtoLocalStorage));
+                                window.location.href = 'update.html';
+                            });
+
+                            //firing delete function
+                            del.addEventListener("click", () => {
+                                deleteTodo(data[i]);
+                            })
+                        }
+                        
+                    })
+                    .catch(error => console.log(error))
+            }
+
+
+            //http call to delete todo
+            deleteTodo = (data) => {
+                console.log(data.taskNumber); 
+            fetch('http://localhost:3000/deleteTodo', {
+                method : 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body : JSON.stringify({
+                    actionInfo : {action_id : "my_operation"},
+                    sessionData : {userId : userSession.userId},
+                    formData : {taskNumber : data.taskNumber}
+                })})
+                    .then(res => res.json())
+                    .then(data => getAllTodo())
+                    .catch(error => console.log(error));    
+            }
+
+            
+            //toggle sidebar 
+            hamburgerMenu = document.getElementById('menuBtn');
+            sidebar = document.getElementById('sidebar');
+            hamburgerMenu.addEventListener("click", () => {
+                if(window.matchMedia("(max-width: 980px)")){
+                    if(sidebar.style.display == 'block'){
+                        sidebar.style.display = 'none';
+                    }
+                    else{
+                        sidebar.style.display = 'block';
+                    }
+                }
+            })
+
+            //themes ---incomplete--- 
+            function whitePink(){
+                document.documentElement.style.filter = 'invert(1) hue-rotate(240deg) saturate(200%) sepia(20%)'
+                document.getElementsByClassName('inverted').style.filter = 'invert(1) hue-rotate(180deg)';
+            }
+
+            function whiteGreen(){
+                document.documentElement.style.filter = 'invert(1) hue-rotate(90deg) saturate(200%) sepia(20%)'
+                
+            }
+
+            function blackPurple(){
+                document.documentElement.style.filter = 'none'
+                document.getElementsByClassName('inverted').style.filter = 'none';
+            }
     </script>
 </body>
 </html>

@@ -5,77 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna" rel="stylesheet" type="text/css"/>
     <title>Register</title>
     <style>
+        @import url(//db.onlinewebfonts.com/c/3c1a4128f95e2109303b045eda4bfe8a?family=Etna);    
         body{
-            background: linear-gradient(230deg, #F3A36B, #CBCACD 30%, #c2e9f3) fixed no-repeat;
+            background: #29282e;
             height: 100vh;
         }
-        #message{
-            text-align: center;
+        .box{
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: center;
+            position: relative;
+            top: 20%;
+            height: 75vh;
+            background: #2E323B;
+            box-shadow: 10px 10px 10px black;
         }
         .header{
-            font-size: large;
-            font-weight: 900;
-            color: #B4CAF1;
+            background: linear-gradient(to left,#695BCD, #FDAAFA);
+            font-family: 'Etna';
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-align: center;
-            font-family: 'Segoe UI';
-            margin-top: 5%;
-        }
-        .upperDots{
-            color: white;
-            float: left;
-        }
-        .cardOutsider{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .card{
-            width: 100%;
-            top: 20%;
-            background: rgb(245, 244, 244);
-            margin-bottom: -7%;
-            border-radius: 25px;
-        }
-        .circles{
-            color: #4f4e4d;
-            margin-top: -20px;
-        }
-        .cardHeader{
-            color: #383737;
-            font-family: 'Segoe UI';
-            text-align: center;
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: x-large;
+            font-weight: bolder;
+            margin-top: 20px;
+            height: fit-content;
         }
         .form{
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
         }
         input{
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border: 2px solid #9b9a99;
-            border-radius: 25px;
+            border: none;
+            border-bottom: 2px solid #9184e3;
             outline: none;
-            width: 70%;
-            aspect-ratio: 8/1;
-            color: #424242;
+            width: 80%;
+            aspect-ratio: 12/1;
+            color: #d4cefa;
             background: none;
             padding-left: 10px;
             font-family: 'Calibri';
+            font-weight: bold;
+        }
+        input:focus::placeholder{
+            font-weight: normal;
+            transform: translateY(-20px);
+        }
+        input::placeholder{
+            font-weight: normal;
+            color: #9792b4;
+            transition: all 0.3s ease;
         }
         input:active{
             border-top : none;
             border-left: none;
             border-right: none;
             outline: none;
+            font-weight: bold;
         }
         .centerPlace{
             display: flex;
@@ -86,14 +81,19 @@
         button{
             width: 70%;
             aspect-ratio: 3/1;
-            background: #646262;
-            border: 2px solid #646262;
+            background: none;
+            border: 1px solid #9184e3;
             color:#ded8d8;
             border-radius: 25px;
             margin-top: 2%;
         }
         button:hover{
-            background: rgb(73, 73, 73);
+            background: linear-gradient(to left,#695BCD, #b067ec);
+        }
+        button:focus{
+            border: 1px solid #9184e3;
+            outline: none;
+            background: #9184e3;
         }
         .alreadyExisting{
             width: fit-content;
@@ -107,35 +107,32 @@
             text-decoration: none;
         }
         a:hover{
-            color: #2f2e2e;
+            color: #bcb8b8;
             text-decoration: none;
         }
     </style>
+</head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6">
-                <div class="shadow-lg p-3 mb-5 bg-body card">
-                    <div class="card-body">
-                        <div class="circles">&#9675 &#9675 &#9675</div>
-                        <div class="cardHeader"><h5><b>Register</b></h5></div>
-                        <div class="form">
-                            <input type="text" placeholder="username" id="username" autocomplete="off" required/> <br>
-                            <input type="email" placeholder="email" id="email" autocomplete="off" required/><br>
-                            <input type="password" placeholder="password" id="password" required><br>
-                            <div class="centerPlace">
-                                <button onclick="submit()"><b>SIGN UP</b></button>
-                                <div class="alreadyExisting"><p><a href="login.html">Already have an account? Login</a></p></div>
-                            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <div class="box">
+                    <div class="header">SIGN UP</div>
+                    <div class="form">
+                        <input type="text" placeholder="username" id="username" autocomplete="off" required/> <br>
+                        <input type="email" placeholder="email" id="email" autocomplete="off" required/><br>
+                        <input type="password" placeholder="password" id="password" required><br>
+                        <div class="centerPlace">
+                            <button onclick="submit()"><b>SIGN UP</b></button>
+                            <div class="alreadyExisting"><p><a href="login.html">Already have an account? Login</a></p></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3"></div>
+            <div class="col-lg-2"></div>
         </div>
     </div>
-
     
     <script>
         function submit(){
@@ -168,6 +165,7 @@
             })})
                 .then(res => res.json())
                 .then(data => {if(data=="Registered Successfully!"){
+                    alert("Registered Succesfully! Login to use!")
                     window.location.href = 'login.html';
                 }
                 else{
