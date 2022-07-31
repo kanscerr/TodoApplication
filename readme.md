@@ -14,7 +14,7 @@
 - Registers new user with unique usernames
 - Login with username and password
 - Add todos against a user which are stored in database
-- Shows all saved todos on client side
+- Shows all saved todos on client side in ascending order of Task Number
 - Delete any todo
 - Modify todos as per requirement
 
