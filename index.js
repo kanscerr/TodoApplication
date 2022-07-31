@@ -83,10 +83,10 @@ app.post('/login', (req, res) => {
             {'userInfo.username' : req.body.formData.username, 'userInfo.password' : req.body.formData.password},
             (error, result) => {
                 if(result){
-                    res.json("Login Successful!");
+                    res.send(result);
                 }
                 else{
-                    res.json("Login credentials invalid!")
+                    res.json({error : "Login credentials invalid!"})
                 }
             }
         )
@@ -95,37 +95,56 @@ app.post('/login', (req, res) => {
 
 //adding todo against a user
 app.post('/addTodo', (req, res) => {
+    let taskNumbers = [];
     if(req.body.actionInfo && req.body.formData){
-        const newData = {taskNumber: req.body.formData.taskNumber, todo : req.body.formData.todo, isDeleted : false}
-        model.find(
-            {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
-            function(error, result){
-                if(result.length!= 0){
-                    console.log(result);
-                    res.send("A todo with task number already exists")
+        model.findOne(
+            {userId : req.body.sessionData.userId},
+            (error, result) => {
+                if(result){
+                    let data = result.formData
+                    for (i=0;i<data.length;i++){
+                        taskNumbers.push(data[i].taskNumber);
+                    }
+                    taskNumbers.sort((a,b) => b-a) //to display todos in ascending oder of taskNumber
+                    if(taskNumbers.length>0){
+                        const newData = {taskNumber: taskNumbers[0]+1, todo : req.body.formData.todo, isDeleted : false}
+                        model.findOneAndUpdate(
+                            {userId : req.body.sessionData.userId},
+                            {$push : {formData : newData}},
+                            function(error, result){
+                                if(result){
+                                    res.send(newData);
+                                }
+                                else{
+                                    res.json("Oops! Something went wrong.")
+                                }
+                            }
+                        )
+                    }
+                    else{
+                        const newData = {taskNumber: 1, todo : req.body.formData.todo, isDeleted : false}
+                        model.findOneAndUpdate(
+                            {userId : req.body.sessionData.userId},
+                            {$push : {formData : newData}},
+                            function(error, result){
+                                if(result){
+                                    res.send(newData);
+                                }
+                                else{
+                                    res.json("Oops! Something went wrong.");
+                                }
+                            }
+                        )
+                    }
                 }
                 else{
-                    model.findOneAndUpdate(
-                        {userId : req.body.sessionData.userId},
-                        {$push : {formData : newData}},
-                        function(error, result){
-                            if(result){
-                                res.send(result)
-                            }
-                            else{
-                                res.send({error : "Oops! Something went wrong."})
-                            }
-                        }
-                    )
+                    res.json("Invalid Unser!");
                 }
             }
         )
     }
-    else if(req.body.sessionData.userId!=100){
-        res.send({error : "User not valid"});
-    }
     else{
-        res.send({error : 'Not enough information'})
+        res.json("Invalid information");
     }
 })
 
@@ -143,7 +162,7 @@ app.post('/getAllTodo', (req, res) => {
                             todoArr.push(data[i]);
                         }
                     }
-                    todoArr.sort((a,b) => a.task-b.task) //to display todos in ascending oder of taskNumber
+                    todoArr.sort((a,b) => a.taskNumber-b.taskNumber) //to display todos in ascending oder of taskNumber
                     res.send(todoArr);
                 }
                 else{
@@ -203,7 +222,7 @@ app.post('/deleteTodo', (req, res) => {
         model.find(
             {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
             (error, result) => {
-                if(result.length>0){
+                if(result){
                     model.findOneAndUpdate(
                         {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
                         {$set : {'formData.$.isDeleted' : true}}, 
@@ -235,42 +254,45 @@ app.post('/deleteTodo', (req, res) => {
 app.post('/updateTodo', (req, res) => {
     if(req.body.actionInfo && req.body.formData){
         model.findOne(
-            {userId : req.body.sessionData.userId},
-            (error, result) => {
+            {userid : req.body.sessionData.userid, 'formData.taskNumber' : req.body.formData.taskNumber},
+            function(error, result){
                 if(result){
                     data = result.formData
                     for(i=0;i<data.length;i++){
                         //to check if required is deleted or not
                         if(data[i].taskNumber==req.body.formData.taskNumber && data[i].isDeleted==false){
                             model.findOneAndUpdate(
-                                {userId : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
+                                {userid : req.body.sessionData.userId, 'formData.taskNumber' : req.body.formData.taskNumber},
                                 {$set : {'formData.$.todo' : req.body.formData.todo}},
                                 (error, result) => {
                                     if(result){
-                                        res.send(result);
+                                        res.json("Updated!");
                                     }
                                     else{
-                                        res.send(error)
+                                        res.json("Oops! Something went wrong.")
                                     }
                                 }
                             )
                         }
                         else if(data[i].taskNumber==req.body.formData.taskNumber && data[i].isDeleted==true){
-                            res.send({error : "No such task available"});
+                            res.json("No such task available");
                         }
                         else{
                             continue;
                         }
                     }
                 }
+                else{
+                    res.json("No such task available!");
+                }
             }
         )
     }
     else if(req.body.sessionData.userId!=100){
-        res.send({error : "User not valid"});
+        res.json("User not valid");
     }
     else{
-        res.send({error : "Not enough information!"});
+        res.json("Not enough information!");
     }
 })
 
